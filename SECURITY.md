@@ -1,186 +1,189 @@
-# Security Policy / セキュリティポリシー
+# セキュリティポリシー
 
-| Item | Detail |
+| 項目 | 内容 |
 |---|---|
-| Scope | Public repositories owned by [SEAOS Inc.](https://github.com/seaosinc) |
-| Version | 1.0 |
-| Effective | 〈要記入：YYYY-MM-DD〉 |
-| Location | `seaosinc/.github` / `SECURITY.md` |
-| Precedence | A repository's own `SECURITY.md` takes precedence over this document |
-
-*日本語版は英語版の後に続きます。*
+| 文書種別 | 組織共通ポリシー（GitHub 既定コミュニティヘルスファイル） |
+| 適用対象 | SEAOS Inc. が保有するすべてのリポジトリ（公開・非公開） |
+| 版 | 1.0 |
+| 制定日 | 〈要記入：YYYY-MM-DD〉 |
+| 所管 | 〈要記入：部門名〉 |
+| 見直し周期 | 年 1 回、および重大インシデント発生時 |
+| 配置 | `seaosinc/.github` / `SECURITY.md` |
 
 ---
 
-## 1. Scope
+## 1. 目的
 
-1.1 This policy applies to all public repositories owned by SEAOS Inc.
+本ポリシーは、次の 2 点を定めることを目的とする。
 
-1.2 Where a repository provides its own `SECURITY.md`, that document takes precedence.
+1. 認証情報、個人情報および本番データが、ソースコード、コミット履歴、プルリクエスト、CI ログ等に記録されることの防止と、記録された場合の対応
+2. 脆弱性の報告方法と、報告を受けた後の対応
 
-1.3 Private repositories are governed separately and are not in scope.
+## 2. 適用範囲
 
-## 2. Reporting a vulnerability
+2.1 本ポリシーは、SEAOS Inc. が保有するすべてのリポジトリに適用する。
 
-2.1 **Do not report vulnerabilities through public issues, pull requests or discussions.** Doing so discloses the attack before a fix is available.
+2.2 リポジトリ固有の `SECURITY.md` が存在する場合は、当該文書を優先する。ただし、社内の要員については、第 4 章（インシデント発生時の対応）および第 5 章（報告）をいかなる場合も適用する。
 
-2.2 Reports are accepted through the following channels, in order of preference:
-
-| Priority | Channel |
-|---|---|
-| 1 | GitHub private vulnerability reporting — **Security → Report a vulnerability** on the affected repository |
-| 2 | Email — 〈To be completed: address to be published later〉 |
-
-2.3 Reports may be submitted in English or Japanese.
-
-## 3. Information to include
-
-A report should contain:
-
-- The affected repository, file or path, and the commit where known
-- The class of vulnerability (authentication bypass, privilege escalation, information disclosure, injection, supply chain, and so on)
-- Steps to reproduce, including the minimal configuration, the input used, and the observed result
-- The assessed impact: which actor can reach which asset, and to what extent
-- A proposed fix or mitigation, where one is known
-- The name under which credit should be given, if desired
-
-## 4. Conduct of research
-
-4.1 Testing shall be conducted only against systems controlled by the reporter. SEAOS production systems and third-party environments are out of scope.
-
-4.2 Where a secret (API key, token, personal data) is reached, only the minimum necessary to demonstrate the finding shall be recorded. Such material shall not be retained, transmitted or used.
-
-4.3 Details shall not be published before a fix is released, in accordance with section 6.
-
-## 5. Response process
-
-| Stage | Target |
-|---|---|
-| Acknowledgement of receipt | 3 business days |
-| Initial assessment (scope and provisional severity) | 7 days |
-| Status updates | Every 14 days until resolution |
-| Remediation | Critical: 7 days · High: 30 days · Medium: 90 days · Low: next scheduled release |
-
-Severity is assessed with reference to [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document), taking into account how the affected code is deployed in practice.
-
-Where a report is declined as out of scope, not reproducible or already known, the reason will be provided. A reporter who disagrees with that assessment may request reconsideration.
-
-## 6. Coordinated disclosure
-
-6.1 Reporters are asked to withhold public disclosure until the earlier of 90 days from the report, or the release of a fix.
-
-6.2 Where remediation requires more than 90 days, SEAOS will provide the reason and an estimated timeline, and will agree a disclosure date with the reporter.
-
-6.3 Disclosure is made through GitHub Security Advisories. Credit is given where the reporter wishes.
-
-6.4 Where a reporter discloses in advance of a fix, remediation will nonetheless continue in the interest of users.
-
-## 7. Safe harbour
-
-7.1 SEAOS will not pursue legal action in respect of research and reporting conducted in good faith and in accordance with this policy.
-
-7.2 Where a reporter unintentionally exceeds the scope of this policy, the activity will be treated as good faith provided it is ceased promptly and reported.
-
-7.3 This policy does not authorise attacks on the systems of third parties, nor access to the data of third parties.
-
-## 8. Exclusions
-
-| Out of scope | Refer to |
-|---|---|
-| Upstream libraries, MCP servers and other dependencies | The respective project |
-| GitHub, AWS, Slack and other third-party services | The respective provider |
-| SEAOS private repositories | SEAOS internal reporting channel |
-| User misconfiguration, except where the design induces the error | — |
-| Attacks on third parties, social engineering, physical intrusion, denial of service | Not accepted |
+2.3 本ポリシーは公開リポジトリに配置されており、社外からも閲覧できる。
 
 ---
+
+## 3. 禁止事項
+
+3.1 次に掲げる情報を、リポジトリに記録してはならない。
+
+| 分類 | 対象 |
+|---|---|
+| 認証情報 | API キー、アクセストークン、パスワード、接続文字列、`.env`、`.env.*` |
+| 鍵情報 | `*.pem`、`id_rsa`、SSH 鍵、TLS 秘密鍵、キーストア |
+| クラウド資格情報 | `~/.aws/credentials`、サービスアカウント JSON |
+| 個人情報 | 氏名、連絡先、顧客データ、本番環境から取得した一切のデータ |
+| 本番データ | データベースダンプ、バックアップ、実データを含むシードファイル |
+
+3.2 生成 AI を用いた開発においても、前項の情報を読み取らせ、または出力させてはならない。組織の管理設定により禁止されている読み取りを、個人の設定で解除してはならない。
+
+3.3 試験用の値を要する場合は、リポジトリ内のサンプル設定ファイル（`*.example`、シードファイル）に記載すること。実在する値を用いてはならない。
+
 ---
 
-# 日本語
+## 4. インシデント発生時の対応
 
-## 1. 適用範囲
+### 4.1 対応順序
 
-1.1 本ポリシーは、SEAOS Inc. が保有するすべての公開リポジトリに適用する。
+認証情報の記録が判明した場合、次の順序により対応しなければならない。**履歴からの削除を先行させてはならない。**
 
-1.2 リポジトリ固有の `SECURITY.md` が存在する場合は、当該文書を優先する。
+| 順序 | 措置 | 補足 |
+|---|---|---|
+| 1 | **当該認証情報の失効（ローテーション）** | AWS、GitHub、Slack、データベース、外部 API。新規発行および旧情報の無効化を行う |
+| 2 | **第 5 章に定める窓口への報告** | 遅滞なく行うこと。影響範囲の自己判断により報告を省略してはならない |
+| 3 | 影響範囲の確認 | 露出期間、閲覧可能であった者の範囲、アクセスログにおける不審な利用の有無 |
+| 4 | 履歴の書き換えまたはファイルの削除 | 第 1 項から第 3 項の完了後に、実施の要否を判断する |
 
-1.3 非公開リポジトリは別途定めるポリシーによるものとし、本ポリシーの対象外とする。
+### 4.2 削除による復旧が成立しない理由
 
-## 2. 脆弱性の報告
+一度 push された情報は、次の各所に複製され得る。これらは記録者による削除が不可能である。
 
-2.1 **公開 Issue、プルリクエストおよび Discussions により報告してはならない。** 修正の提供前に攻撃手法が公開されるためである。
+- 他の要員のローカルクローン（全プロジェクト）
+- フォーク、および GitHub が保持するプルリクエスト参照（`refs/pull/*`）
+- CI の実行ログ、成果物、キャッシュ
+- 連携する外部サービス（コードレビュー、生成 AI ツール、IDE 拡張）
+- 各要員の手元のバックアップおよびエディタ履歴
 
-2.2 報告は、次の窓口により受け付ける。
+したがって、**認証情報の失効が唯一の確実な措置**である。失効済みの認証情報は、複製が残存していても悪用され得ない。
 
-| 優先 | 窓口 |
+### 4.3 個人情報が含まれる場合
+
+個人情報には失効に相当する措置が存在しないため、第 5 章の窓口への報告を必須とする。削除範囲および法令上の対応要否は、所管部門が個別に判断する。報告を経ずに削除をもって完了としてはならない。
+
+---
+
+## 5. 報告
+
+### 5.1 報告先
+
+| 報告者 | 窓口 |
 |---|---|
-| 1 | GitHub の非公開報告 — 対象リポジトリの **Security → Report a vulnerability** |
-| 2 | メール — 〈要記入：アドレスは後日公開〉 |
+| 社内の要員 | Slack `#security_incident_report`（第一報、認証情報の失効依頼を含む） |
+| 社外の方（公開リポジトリ） | 対象リポジトリの **Security → Report a vulnerability**（GitHub の非公開報告） |
+| 緊急時・上記を利用できない場合 | 〈要記入：メールアドレス（後日更新）〉 |
 
-2.3 報告は日本語または英語による。
+### 5.2 報告方法
 
-## 3. 報告に含める情報
+5.2.1 公開 Issue、プルリクエスト、Discussions、全社チャンネルその他、修正前に内容が拡散し得る場所に記載してはならない。
 
-- 対象リポジトリ、ファイルまたはパス（判明している場合はコミット）
-- 脆弱性の分類（認証の迂回、権限昇格、情報の露出、インジェクション、供給網等）
-- 再現手順（最小構成、入力、観測結果）
-- 想定される影響（到達可能な主体、対象資産およびその範囲）
+5.2.2 報告は日本語または英語による。
+
+5.2.3 報告には、次の情報を含めること。
+
+- 対象リポジトリおよびファイル（判明している場合はコミット）
+- 事象の分類（認証の迂回、認可の不備、秘密情報の露出、インジェクション、供給網等）
+- 再現手順および観測結果
+- 想定される影響（到達可能な主体、対象、範囲）
 - 判明している場合は、修正案または回避策
-- クレジットの記載を希望する場合は、その名義
+- 社外の方は、クレジットの記載を希望する場合はその名義
 
-## 4. 調査に関する遵守事項
+### 5.3 調査に関する遵守事項
 
-4.1 検証は、報告者が管理するシステムにおいてのみ行うものとする。SEAOS の本番環境および第三者の環境は対象外とする。
+5.3.1 再現確認は、報告者が管理する環境においてのみ行うこと。SEAOS の本番環境および第三者の環境を対象としてはならない。
 
-4.2 秘密情報（API キー、トークン、個人情報）に到達した場合は、立証に必要な最小限の範囲でのみ記録するものとし、保存、転送または利用してはならない。
+5.3.2 到達した秘密情報は、立証に必要な最小限の範囲でのみ記録し、保存、転送または利用してはならない。
 
-4.3 修正の公開前に詳細を公表してはならない（第 6 章による）。
+5.3.3 修正の公開前に、詳細を公表してはならない（第 7 章による）。
 
-## 5. 対応プロセス
+---
 
-| 段階 | 目標 |
-|---|---|
-| 受領連絡 | 3 営業日 |
-| 一次評価（対象の判定および暫定深刻度） | 7 日 |
-| 進捗連絡 | 解決まで 14 日ごと |
-| 修正完了 | Critical：7 日 ／ High：30 日 ／ Medium：90 日 ／ Low：次回定期リリース |
+## 6. 対応目標
+
+| 段階 | 社内からの報告 | 社外からの報告 |
+|---|---|---|
+| 受領連絡 | 1 営業日以内 | 3 営業日以内 |
+| 一次評価（深刻度、影響範囲） | 3 営業日以内 | 7 日以内 |
+| 認証情報の失効を要する場合 | 当日 | 当日 |
+| 修正完了 | Critical：7 日 ／ High：30 日 ／ Medium：90 日 ／ Low：次回定期リリース | 同左 |
+| 進捗連絡 | 解決まで 14 日ごと | 解決まで 14 日ごと |
 
 深刻度は [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) を参考とし、実際の配置状況を踏まえて判定する。
 
 対象外、再現不能または既知と判断した場合は、その理由を付して回答する。当該判断に異議がある場合は、再評価を申し出ることができる。
 
-## 6. 協調的開示
+---
 
-6.1 報告から 90 日、または修正の公開のいずれか早い時点まで、詳細の公表を控えるものとする。
+## 7. 協調的開示
 
-6.2 修正に 90 日を超える期間を要する場合は、理由および見込みを通知し、公開時期を協議する。
+7.1 社外の報告者は、報告から 90 日、または修正の公開のいずれか早い時点まで、詳細の公表を控えるものとする。
 
-6.3 公開は GitHub Security Advisory により行い、報告者の希望に応じてクレジットを記載する。
+7.2 修正に 90 日を超える期間を要する場合は、理由および見込みを通知し、公開時期を協議する。
 
-6.4 修正の公開に先立ち報告者が公表した場合においても、利用者保護の観点から修正を継続する。
+7.3 公開は GitHub Security Advisory により行い、報告者の希望に応じてクレジットを記載する。
 
-## 7. セーフハーバー
+7.4 修正の公開に先立ち報告者が公表した場合においても、利用者保護の観点から修正を継続する。
 
-7.1 本ポリシーに従い誠実に行われた調査および報告について、SEAOS は法的措置を講じない。
+## 8. セーフハーバー
 
-7.2 調査の過程で意図せず本ポリシーの範囲を超えた場合においても、速やかに中止し報告されたときは、誠実な調査として取り扱う。
+8.1 本ポリシーに従い誠実に行われた調査および報告について、SEAOS は法的措置を講じない。
 
-7.3 本ポリシーは、第三者のシステムへの攻撃または第三者のデータへのアクセスを許諾するものではない。
+8.2 調査の過程で意図せず本ポリシーの範囲を超えた場合においても、速やかに中止し報告されたときは、誠実な調査として取り扱う。
 
-## 8. 適用除外
-
-| 対象外 | 窓口 |
-|---|---|
-| 依存ライブラリ、MCP サーバその他の依存コンポーネント | 各プロジェクト |
-| GitHub、AWS、Slack 等の外部サービス | 各提供者 |
-| SEAOS の非公開リポジトリ | 社内の報告窓口 |
-| 利用者の設定誤り。ただし設計が当該誤りを誘発する場合を除く | — |
-| 第三者への攻撃、ソーシャルエンジニアリング、物理的侵入、サービス妨害 | 受け付けない |
+8.3 本ポリシーは、第三者のシステムへの攻撃または第三者のデータへのアクセスを許諾するものではない。
 
 ---
 
-## 改訂履歴 / Revision history
+## 9. 開発における遵守事項（社内）
 
-| 版 / Version | 日付 / Date | 内容 / Change |
+9.1 既定ブランチへの直接 push を行ってはならない。変更はプルリクエストを経ること。
+
+9.2 影響度 P0 または P1 に分類される変更は、作成者以外の承認を得ずにマージしてはならない。
+
+9.3 生成 AI が作成したコードについても、人による査読を省略してはならない。
+
+9.4 検証目的で導入した迂回設定（認証バイパス、固定値、モック設定等）は、検証終了後に削除しなければならない。やむを得ず残置する場合は、期限および担当者を Issue に記録すること。
+
+9.5 CI における秘密情報検査が検出を報告した場合、当該プルリクエストをマージしてはならない。
+
+9.6 アクセストークンは、必要最小限の権限および対象リポジトリに限定して発行すること。
+
+9.7 リポジトリが非公開であることを、情報保護の根拠としてはならない。閲覧権限者の範囲、アカウントの侵害、連携アプリケーション経由の流出は、非公開リポジトリにおいても発生し得る。
+
+---
+
+## 10. 適用除外
+
+| 対象 | 窓口 |
+|---|---|
+| 依存ライブラリ、MCP サーバその他の依存コンポーネント | 各プロジェクト |
+| GitHub、AWS、Slack 等の外部サービス自体の脆弱性 | 各サービス提供者 |
+| 利用者の設定誤り。ただし設計が当該誤りを誘発する場合を除く | — |
+| 第三者環境または本番環境への攻撃、ソーシャルエンジニアリング、物理的侵入、サービス妨害 | 受け付けない |
+
+---
+
+## 附則
+
+本ポリシーは制定日より施行する。
+
+## 改訂履歴
+
+| 版 | 日付 | 改訂内容 |
 |---|---|---|
-| 1.0 | 〈要記入〉 | 制定 / Initial issue |
+| 1.0 | 〈要記入〉 | 制定 |
